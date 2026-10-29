@@ -191,3 +191,27 @@ Comprueba en GitHub que tu fork tiene ahora dos ramas: `main` y `v2-validacion`.
 - [ ] No quedan números mágicos en `MainActivity`.
 - [ ] `onCreate()` solo prepara la pantalla; la lógica está en `calcularEdad()`.
 - [ ] El trabajo está en la rama `v2-validacion`, no en `main`.
+
+---
+
+## 🧪 Pruebas de Validación y Control de Errores (v2-validacion)
+
+### Respuestas a las preguntas teóricas
+
+* **Causas de cierre en v1:** `Integer.parseInt()` lanzaba `NumberFormatException` al recibir cadenas vacías (`""`), decimales (`"3.5"`) o texto no numérico (`"abc"`).
+* **Valores grandes:** `99999999999` supera el valor máximo de `int` en Java (`Integer.MAX_VALUE`), lanzando `NumberFormatException`. Por su parte, `400000000` provoca un desbordamiento aritmético (*integer overflow*) al multiplicarse por 7, dando resultados negativos absurdos.
+* **Formatos de texto:** `%1$d` y `%2$d` son marcadores para números enteros. Se rellenan en el orden estricto en que se le pasan a `getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA)`.
+* **Uso de atributos de clase:** Declarar `ageEdit` y `resultText` como atributos globales evita el sombreado de variables (*shadowing*) y permite acceder a las vistas desde métodos auxiliares como `calcularEdad()` y `mostrarError()`.
+* **Prevención de desbordamiento:** Limitar la edad máxima a 30 garantiza que la multiplicación máxima sea $30 \times 7 = 210$, manteniéndose siempre dentro de los límites seguros de un entero.
+
+---
+
+### Resultados de la suite de pruebas
+
+| Entrada probada | Resultado obtenido en pantalla | Comportamiento del código |
+| :--- | :--- | :--- |
+| **(campo vacío)** | Error: *"Introduce la edad de tu perro"* | Detectado por `input.isEmpty()`. Evita la excepción. |
+| **`0`** | Error: *"La edad debe estar entre 1 y 30 años"* | Detectado por el filtro de rango (`age < EDAD_MINIMA`). |
+| **`31`** | Error: *"La edad debe estar entre 1 y 30 años"* | Detectado por el filtro de rango (`age > EDAD_MAXIMA`). |
+| **`1`** | *"Si tu perro fuera humano tendría 7 años"* | Cálculo correcto ($1 \times 7$). |
+| **`30`** | *"Si tu perro fuera humano tendría 210 años"* | Cálculo correcto ($30 \times 7$). |
