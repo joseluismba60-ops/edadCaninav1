@@ -4,13 +4,13 @@ plugins {
 
 android {
     namespace = "es.davante.edadcanina"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         // Se añade .mvc al applicationId segun los requisitos de la tarea
         applicationId = "es.davante.edadcanina.mvc"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

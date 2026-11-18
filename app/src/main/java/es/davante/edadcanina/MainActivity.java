@@ -1,39 +1,33 @@
 package es.davante.edadcanina;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import es.davante.edadcanina.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Paso 6: Constantes en lugar de números mágicos
+    // Constantes de negocio de la v2
     private static final int FACTOR_CANINO = 7;
     private static final int EDAD_MINIMA = 1;
     private static final int EDAD_MAXIMA = 30;
 
-    // Paso 7: Atributos globales de clase para las vistas
-    private EditText ageEdit;
-    private TextView resultText;
+    // Atributo binding en lugar de vistas sueltas (no más findViewById)
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        // Paso 7: Asignación a los atributos de clase
-        ageEdit = findViewById(R.id.age_input);
-        resultText = findViewById(R.id.result_text);
-        Button button1 = findViewById(R.id.btn_calc);
+        // Inicialización mediante DataBindingUtil
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        // Paso 8: Listener en una línea hacia la función de cálculo
-        button1.setOnClickListener(view -> calcularEdad());
+        // Acceso directo al botón desde el binding
+        binding.btnCalc.setOnClickListener(view -> calcularEdad());
     }
 
-    // Paso 10: Lógica completa de validación
     private void calcularEdad() {
-        String input = ageEdit.getText().toString().trim();
+        String input = binding.ageInput.getText().toString().trim();
 
         // 1. Validar si está vacío
         if (input.isEmpty()) {
@@ -58,15 +52,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 4. Salida en caso de éxito
-        ageEdit.setError(null);
+        binding.ageInput.setError(null);
         int edadHumana = age * FACTOR_CANINO;
-        resultText.setText(getString(R.string.tu_edad_format, edadHumana));
+        binding.resultText.setText(getString(R.string.tu_edad_format, edadHumana));
     }
 
-    // Paso 9: Método para mostrar el error y gestionar el foco
     private void mostrarError(String mensaje) {
-        ageEdit.setError(mensaje);
-        ageEdit.requestFocus();
-        resultText.setText("");
+        binding.ageInput.setError(mensaje);
+        binding.ageInput.requestFocus();
+        binding.resultText.setText("");
     }
 }

@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="@string/txt_titulo"
-        android:textSize="32sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="192dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/imgdog" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:text="@string/txt_titulo"
+            android:textSize="32sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/input_age"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        <ImageView
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/imgdog" />
 
-    <EditText
-        android:id="@+id/age_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:minWidth="120dp"
-        android:minHeight="48dp"
-        android:hint="@string/hint_edad"
-        android:inputType="number"
-        android:maxLength="2"
-        android:gravity="center"
-        android:importantForAutofill="no"
-        android:textSize="48sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/input_age"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/result_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:textSize="16sp" />
+        <EditText
+            android:id="@+id/age_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:minWidth="120dp"
+            android:minHeight="48dp"
+            android:hint="@string/hint_edad"
+            android:inputType="number"
+            android:maxLength="2"
+            android:gravity="center"
+            android:importantForAutofill="no"
+            android:textSize="48sp" />
 
-    <Button
-        android:id="@+id/btn_calc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/btn_calc"
-        android:textSize="22sp" />
+        <TextView
+            android:id="@+id/result_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="16sp" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        <Button
+            android:id="@+id/btn_calc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/btn_calc"
+            android:textSize="22sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
