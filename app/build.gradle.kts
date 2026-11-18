@@ -4,25 +4,31 @@ plugins {
 
 android {
     namespace = "es.davante.edadcanina"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "es.davante.edadcanina"
+        // Se añade .mvc al applicationId segun los requisitos de la tarea
+        applicationId = "es.davante.edadcanina.mvc"
         minSdk = 24
-        targetSdk = 37
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Activacion de DataBinding para la v3
+    buildFeatures {
+        dataBinding = true
+    }
+
     buildTypes {
         release {
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
