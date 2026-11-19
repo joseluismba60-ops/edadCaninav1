@@ -191,3 +191,21 @@ Comprueba en GitHub que tu fork tiene ahora dos ramas: `main` y `v2-validacion`.
 - [ ] No quedan números mágicos en `MainActivity`.
 - [ ] `onCreate()` solo prepara la pantalla; la lógica está en `calcularEdad()`.
 - [ ] El trabajo está en la rama `v2-validacion`, no en `main`.
+
+# Práctica Edad Canina v3 - Arquitectura MVC con DataBinding
+
+## Respuestas Teóricas
+
+### 1. ¿Qué ventajas aporta separar la lógica en Modelo, Vista y Controlador respecto a tener todo en la Activity?
+* **Mantenibilidad y legibilidad:** Al dividir las responsabilidades, el código es más limpio y fácil de entender. La Activity deja de ser una clase monolítica que gestiona vistas, eventos y reglas de negocio al mismo tiempo.
+* **Testabilidad:** La capa `modelo` no depende del framework de Android (`android.*`), lo que permite ejecutar pruebas unitarias con JUnit de forma ultrarrápida en la JVM local sin necesidad de compilar o arrancar el emulador.
+* **Reutilización y escalabilidad:** El modelo de negocio se vuelve independiente de la interfaz visual, permitiendo cambiar el diseño de la vista o añadir nuevos flujos sin romper la lógica interna de los cálculos y validaciones.
+
+### 2. ¿Qué función cumple `@BindingAdapter` y por qué es útil para la capa Vista?
+* Permite definir atributos personalizados dentro del archivo de diseño XML (`activity_main.xml`).
+* Desacopla completamente la lógica de presentación visual (como la asignación de mensajes de error con `setError` o la gestión del foco) de la Activity.
+* Hace que el XML sea más declarativo y autosuficiente, permitiendo actualizar elementos del sistema gráfico mediante el estado directo expuesto por el modelo observable.
+
+### 3. ¿Cómo reacciona la interfaz cuando cambian las propiedades observables del Modelo?
+* Gracias a la herencia de `BaseObservable`, las anotaciones `@Bindable` en los métodos de lectura (*getters*) y las llamadas a `notifyPropertyChanged(BR.propiedad)` en los métodos de escritura (*setters*), el marco de trabajo DataBinding escucha automáticamente los cambios de estado.
+* Cuando un valor cambia en el modelo, la vista suscrita a esa propiedad se repinta de manera automática e instantánea en la pantalla sin necesidad de invocar métodos imperativos como `setText()` o `setVisibility()` desde la Activity.
