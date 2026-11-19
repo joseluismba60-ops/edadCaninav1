@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <import type="android.view.View" />
+        <import type="es.davante.edadcanina.modelo.Validacion" />
+        <variable
+            name="modelo"
+            type="es.davante.edadcanina.modelo.EdadCaninaModelo" />
+    </data>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -48,7 +56,8 @@
             android:maxLength="2"
             android:gravity="center"
             android:importantForAutofill="no"
-            android:textSize="48sp" />
+            android:textSize="48sp"
+            android:text="@={modelo.edadTexto}" />
 
         <TextView
             android:id="@+id/result_text"
@@ -56,7 +65,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:text="@{@string/tu_edad_format(modelo.edadHumana)}"
+            android:visibility="@{modelo.validacion == Validacion.OK ? View.VISIBLE : View.INVISIBLE}" />
 
         <Button
             android:id="@+id/btn_calc"

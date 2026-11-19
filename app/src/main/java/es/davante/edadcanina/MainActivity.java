@@ -4,62 +4,43 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import es.davante.edadcanina.databinding.ActivityMainBinding;
+import es.davante.edadcanina.modelo.EdadCaninaModelo;
+import es.davante.edadcanina.modelo.Validacion;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Constantes de negocio de la v2
-    private static final int FACTOR_CANINO = 7;
-    private static final int EDAD_MINIMA = 1;
-    private static final int EDAD_MAXIMA = 30;
-
-    // Atributo binding en lugar de vistas sueltas (no más findViewById)
     private ActivityMainBinding binding;
+    private EdadCaninaModelo modelo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Inicialización mediante DataBindingUtil
+        // Instanciar el modelo puro
+        modelo = new EdadCaninaModelo();
+
+        // Conectar el layout con DataBinding y pasarle el modelo
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setModelo(modelo);
 
-        // Acceso directo al botón desde el binding
-        binding.btnCalc.setOnClickListener(view -> calcularEdad());
-    }
+        binding.btnCalc.setOnClickListener(v -> {
+            modelo.calcular();
 
-    private void calcularEdad() {
-        String input = binding.ageInput.getText().toString().trim();
-
-        // 1. Validar si está vacío
-        if (input.isEmpty()) {
-            mostrarError(getString(R.string.error_vacio));
-            return;
-        }
-
-        // 2. Controlar conversión no numérica mediante try/catch
-        int age;
-        try {
-            age = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            mostrarError(getString(R.string.error_no_numero));
-            return;
-        }
-
-        // 3. Validar rango permitido (1 a 30)
-        if (age < EDAD_MINIMA || age > EDAD_MAXIMA) {
-            String mensajeRango = getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA);
-            mostrarError(mensajeRango);
-            return;
-        }
-
-        // 4. Salida en caso de éxito
-        binding.ageInput.setError(null);
-        int edadHumana = age * FACTOR_CANINO;
-        binding.resultText.setText(getString(R.string.tu_edad_format, edadHumana));
-    }
-
-    private void mostrarError(String mensaje) {
-        binding.ageInput.setError(mensaje);
-        binding.ageInput.requestFocus();
-        binding.resultText.setText("");
+            // Gestion de errores de entrada en la vista hasta aplicar el @BindingAdapter en el Paso 5
+            Validacion vRes = modelo.getValidacion();
+            if (vRes == Validacion.ERROR_VACIO) {
+                binding.ageInput.setError(getString(R.string.error_vacio));
+                binding.ageInput.requestFocus();
+            } else if (vRes == Validacion.ERROR_NO_NUMERICO) {
+                binding.ageInput.setError(getString(R.string.error_no_numero));
+                binding.ageInput.requestFocus();
+            } else if (vRes == Validacion.ERROR_RANGO) {
+                binding.ageInput.setError(getString(R.string.error_rango,
+                        EdadCaninaModelo.EDAD_MINIMA, EdadCaninaModelo.EDAD_MAXIMA));
+                binding.ageInput.requestFocus();
+            } else {
+                binding.ageInput.setError(null);
+            }
+        });
     }
 }

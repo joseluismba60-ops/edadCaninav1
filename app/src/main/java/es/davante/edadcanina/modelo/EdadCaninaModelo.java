@@ -1,14 +1,19 @@
 package es.davante.edadcanina.modelo;
 
-public class EdadCaninaModelo {
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import es.davante.edadcanina.BR;
+
+public class EdadCaninaModelo extends BaseObservable {
     public static final int FACTOR_CANINO = 7;
     public static final int EDAD_MINIMA = 1;
     public static final int EDAD_MAXIMA = 30;
 
-    protected String edadTexto = "";
-    protected int edadHumana = 0;
-    protected Validacion validacion = Validacion.SIN_CALCULAR;
+    private String edadTexto = "";
+    private int edadHumana = 0;
+    private Validacion validacion = Validacion.SIN_CALCULAR;
 
+    @Bindable
     public String getEdadTexto() {
         return edadTexto;
     }
@@ -17,47 +22,62 @@ public class EdadCaninaModelo {
         if (edadTexto == null) edadTexto = "";
         if (!this.edadTexto.equals(edadTexto)) {
             this.edadTexto = edadTexto;
-            // Regla de negocio: si el texto cambia, el resultado anterior caduca
-            this.validacion = Validacion.SIN_CALCULAR;
-            this.edadHumana = 0;
+            notifyPropertyChanged(BR.edadTexto);
+            setValidacion(Validacion.SIN_CALCULAR);
+            setEdadHumana(0);
         }
     }
 
+    @Bindable
     public int getEdadHumana() {
         return edadHumana;
     }
 
+    private void setEdadHumana(int edadHumana) {
+        if (this.edadHumana != edadHumana) {
+            this.edadHumana = edadHumana;
+            notifyPropertyChanged(BR.edadHumana);
+        }
+    }
+
+    @Bindable
     public Validacion getValidacion() {
         return validacion;
     }
 
+    private void setValidacion(Validacion validacion) {
+        if (this.validacion != validacion) {
+            this.validacion = validacion;
+            notifyPropertyChanged(BR.validacion);
+        }
+    }
+
     public Validacion calcular() {
         if (edadTexto.trim().isEmpty()) {
-            this.validacion = Validacion.ERROR_VACIO;
-            this.edadHumana = 0;
+            setValidacion(Validacion.ERROR_VACIO);
+            setEdadHumana(0);
             return validacion;
         }
 
         try {
-            int edadPerro = Integer.parseInt(edadTexto.trim());
-            if (edadPerro < EDAD_MINIMA || edadPerro > EDAD_MAXIMA) {
-                this.validacion = Validacion.ERROR_RANGO;
-                this.edadHumana = 0;
+            int edad = Integer.parseInt(edadTexto.trim());
+            if (edad < EDAD_MINIMA || edad > EDAD_MAXIMA) {
+                setValidacion(Validacion.ERROR_RANGO);
+                setEdadHumana(0);
             } else {
-                this.edadHumana = edadPerro * FACTOR_CANINO;
-                this.validacion = Validacion.OK;
+                setEdadHumana(edad * FACTOR_CANINO);
+                setValidacion(Validacion.OK);
             }
         } catch (NumberFormatException e) {
-            this.validacion = Validacion.ERROR_NO_NUMERICO;
-            this.edadHumana = 0;
+            setValidacion(Validacion.ERROR_NO_NUMERICO);
+            setEdadHumana(0);
         }
-
         return validacion;
     }
 
     public void limpiar() {
-        this.edadTexto = "";
-        this.edadHumana = 0;
-        this.validacion = Validacion.SIN_CALCULAR;
+        setEdadTexto("");
+        setEdadHumana(0);
+        setValidacion(Validacion.SIN_CALCULAR);
     }
 }
