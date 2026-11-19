@@ -57,7 +57,8 @@
             android:gravity="center"
             android:importantForAutofill="no"
             android:textSize="48sp"
-            android:text="@={modelo.edadTexto}" />
+            android:text="@={modelo.edadTexto}"
+            app:errorValidacion="@{modelo.validacion}" />
 
         <TextView
             android:id="@+id/result_text"
